@@ -1,9 +1,19 @@
 FormSession Component (packaged as a plugin)
 
 ===============================================================================
+Installation:
+===============================================================================
+- Clone from github : in your plugin directory type `git clone git://github.com/seguer/cakephp-formsession-plugin.git form_session`
+- Add as a git submodule : in your plugin directory type `git submodule add git://github.com/seguer/cakephp-formsession-plugin.git app/plugins/form_session`
+- Download an archive from github and extract it in `app/plugins/form_session`
+
+
+===============================================================================
 Usage:
 ===============================================================================
 In the controller that serves the form:
+
+var $components = array('FormSession.FormSession');
 
 function action()
 {
