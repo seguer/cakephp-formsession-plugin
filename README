@@ -1,0 +1,66 @@
+FormSession Component (packaged as a plugin)
+
+===============================================================================
+Usage:
+===============================================================================
+In the controller that serves the form:
+
+function action()
+{
+	$this->FormSession->read('Model');
+}
+
+
+In the controller or action that the form posts to:
+
+function update()
+{
+	if (!empty($this->data))
+	{
+		$this->Model->create();
+		if ($this->Model->save($this->data))
+		{
+			//save success
+			//redirect to wherever
+		}
+		else
+		{
+			//validation error, write the data to FormSession
+			$this->FormSession->write('Model');
+			//redirect somewhere?
+		}
+	}
+	//redirect somewhere?
+}
+
+===============================================================================
+Advanced Features
+===============================================================================
+The above example is the basic usage of the component - initialize it normally and call its methods, passing in a Model's name.
+
+However, FormSession defaults a model to be used if you don't pass anything in. For example if you have a CommentsController,
+the Comment model will be used as the default model, unless in the $uses var, Comment is not the first model.
+
+Example:
+
+<?php 
+//this results in a default model of Comment. Works if $uses is null or an empty array
+class CommentsController extends AppController {
+		var $uses = array('Comment');
+?>
+
+<?php
+//this results in a default model of Post because it is the first model listed. This shouldn't really be done anyway.
+class CommentsController extends AppController {
+		var $uses = array('Post', 'Comment');
+?>
+
+
+You can also initialise FormSession to use a specific model as its default, and this doesn't even have to be loaded
+directly on the Controller - but it does have to be accessible somehow, through a model relation. For example, if your
+CommentsController only used Comment, but Comment belongsTo Post, you can access Post by doing
+-----
+$this->Comment->Post
+-----
+FormSession is smart enough to find these links through the loaded models in your controller, but will die with an error
+if it can't find the model (if the model you are trying to use is completely unrelated to any loaded models).
